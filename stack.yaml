@@ -1,0 +1,24 @@
+namespace: /bison
+
+dot_validator:
+  defines: runnable
+  inherits: /polkadot/validator
+  variables:
+    # sample keys, obviously do not use this in prod.
+    chain: polkadot
+    node-name: monk-overlord
+    validator_sk: 0x3a37407ee54935b75b723a303e301c2ca23c24625b37b1089fc5b27bc50431c3
+    validator_sr25519_pk: 0x3acfd15c0ef5516a4eeeff48537e08a329c09a603dfa480086707ba9e4c7e628
+    validator_ed25519_pk: 0x258295389473ef1b9f8d2ef9d556e5fde25c11e1fc45aaad36c41e2c611aa394
+
+ksm_validator:
+  defines: runnable
+  inherits: ./dot_validator
+  variables:
+    chain: kusama
+
+stack:
+  defines: process-group
+  runnable-list:
+    - /bison/dot_validator
+    - /bison/ksm_validator
