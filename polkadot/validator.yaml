@@ -31,6 +31,7 @@ validator:
     keys:
       path: /keys.sh
       container: node
+      mode: 700
       contents: |
         insert_key() {
           curl http://localhost:9933 -H "Content-Type:application/json;charset=utf-8" -d \
@@ -48,13 +49,13 @@ validator:
 
         sleep 60
 
-        insert_key "babe" $1 $2
-        insert_key "imon" $1 $2
-        insert_key "auth" $1 $2
-        insert_key "para" $1 $2
-        insert_key "gran" $1 $3
+        insert_key "babe" {{ v "validator_sk" }} {{ v "validator_sr25519_pk" }}
+        insert_key "imon" {{ v "validator_sk" }} {{ v "validator_sr25519_pk" }}
+        insert_key "auth" {{ v "validator_sk" }} {{ v "validator_sr25519_pk" }}
+        insert_key "para" {{ v "validator_sk" }} {{ v "validator_sr25519_pk" }}
+        insert_key "gran" {{ v "validator_sk" }} {{ v "validator_ed25519_pk" }}
   
   actions:
     defines: actions
     inject-keys:
-      code: exec("node", "bin/sh", "-c", "/keys.sh", `${validator_sk}`, `${validator_sr25519_pk}`, `${validator_ed25519_pk}`)
+      code: exec("node", "bin/sh", "-c", "/keys.sh")
