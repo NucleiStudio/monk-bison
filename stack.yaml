@@ -4,6 +4,14 @@ dot_validator:
   defines: runnable
   inherits: /polkadot/validator
 
+  # depend on vault for secret fetching
+  depends:
+    defines: depends
+    wait-for:
+      runnables:
+        - /bison/vault_pandora
+      timeout: 60
+
   variables:
     defines: variables
     chain: polkadot
@@ -16,6 +24,14 @@ dot_validator:
 ksm_validator:
   defines: runnable
   inherits: /polkadot/validator
+
+  # depend on vault for secret fetching
+  depends:
+    defines: depends
+    wait-for:
+      runnables:
+        - /bison/vault_pandora
+      timeout: 60
 
   variables:
     defines: variables
