@@ -3,7 +3,9 @@ namespace: /bison
 dot_validator:
   defines: runnable
   inherits: /polkadot/validator
+
   variables:
+    defines: variables
     # sample keys, obviously do not use this in prod.
     chain: polkadot
     node-name: monk-overlord
@@ -14,13 +16,17 @@ dot_validator:
 ksm_validator:
   defines: runnable
   inherits: ./dot_validator
+  
   variables:
+    defines: variables
     chain: kusama
 
 vault:
   defines: runnable
   inherits: /vault/latest
+
   variables:
+    defines: variables
     root-token: "actualroottokenthatissounsafeyoushouldnevereveruseitinprod"
 
 stack:
