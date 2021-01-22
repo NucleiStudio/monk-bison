@@ -1,0 +1,56 @@
+namespace: /polkadot
+validator:
+  defines: runnable
+  inherits: ./node
+  containers:
+    node:
+      hooks:
+        container-started: inject-keys
+  
+  variables:
+    args:
+      value: "--validator"
+
+    # Opinionated polkadot validator keys setup:
+    # 1. we use the same secret key for grandpa and the other keys.
+    # 2. we only need the ed25519 and sr25519 public keys in addition
+    #    to the secret key, you can obtain those via `subkey`.
+    validator_sk:
+      type: string
+    validator_ed25519_pk:
+      type: string
+    validator_sr25519_pk:
+      type: string
+  
+  files:
+    defines: files
+    keys:
+      path: /keys.sh
+      container: node
+      contents: |
+        insert_key() {
+          curl http://localhost:9933 -H "Content-Type:application/json;charset=utf-8" -d \
+            '{
+              "jsonrpc":"2.0",
+              "id":1,
+              "method":"author_insertKey",
+              "params": [
+                "'$1'",
+                "'$2'",
+                "'$3'"
+              ]
+            }'
+        }
+
+        sleep 60
+
+        insert_key "babe" $1 $2
+        insert_key "imon" $1 $2
+        insert_key "auth" $1 $2
+        insert_key "para" $1 $2
+        insert_key "gran" $1 $3
+  
+  actions:
+    defines: actions
+    inject-keys:
+      code: exec("node", "bin/sh", "-c", "/keys.sh", `${validator_sk}`, `${validator_sr25519_pk}`, `${validator_ed25519_pk}`)

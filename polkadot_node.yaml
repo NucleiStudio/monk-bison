@@ -1,5 +1,5 @@
-namespace: /nuclei
-polkadot:
+namespace: /polkadot
+node:
   defines: runnable
   containers:
     defines: containers
@@ -28,7 +28,7 @@ polkadot:
       value: 9615
     node-name:
       type: string
-      value: "substrate"
+      value: "monk"
     chain:
       type: string
       value: "local"
