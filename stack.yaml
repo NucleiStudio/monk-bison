@@ -6,32 +6,42 @@ dot_validator:
 
   variables:
     defines: variables
-    # sample keys, obviously do not use this in prod.
     chain: polkadot
     node-name: monk-overlord
-    validator_sk: 0x3a37407ee54935b75b723a303e301c2ca23c24625b37b1089fc5b27bc50431c3
-    validator_sr25519_pk: 0x3acfd15c0ef5516a4eeeff48537e08a329c09a603dfa480086707ba9e4c7e628
-    validator_ed25519_pk: 0x258295389473ef1b9f8d2ef9d556e5fde25c11e1fc45aaad36c41e2c611aa394
+    # sample keys, obviously do not use this in prod.
+    validator_sk: <- act("bison/vault/get", "path", "validators/dot", "key", "validator_sk")
+    validator_sr25519_pk: <- act("bison/vault/get", "path", "validators/dot", "key", "validator_sr25519_pk")
+    validator_ed25519_pk: <- act("bison/vault/get", "path", "validators/dot", "key", "validator_ed25519_pk")
 
 ksm_validator:
   defines: runnable
-  inherits: ./dot_validator
-  
+  inherits: /polkadot/validator
+
   variables:
     defines: variables
     chain: kusama
+    node-name: monk-overlord
+    # sample keys, obviously do not use this in prod.
+    validator_sk: <- act("bison/vault/get", "path", "validators/ksm", "key", "validator_sk")
+    validator_sr25519_pk: <- act("bison/vault/get", "path", "validators/ksm", "key", "validator_sr25519_pk")
+    validator_ed25519_pk: <- act("bison/vault/get", "path", "validators/ksm", "key", "validator_ed25519_pk")
 
-vault:
+vault_pandora:
   defines: runnable
-  inherits: /vault/latest
-
+  inherits: ./vault
   variables:
     defines: variables
-    root-token: "actualroottokenthatissounsafeyoushouldnevereveruseitinprod"
+    dot_validator_sk: 0x3a37407ee54935b75b723a303e301c2ca23c24625b37b1089fc5b27bc50431c3
+    dot_validator_sr25519_pk: 0x3acfd15c0ef5516a4eeeff48537e08a329c09a603dfa480086707ba9e4c7e628
+    dot_validator_ed25519_pk: 0x258295389473ef1b9f8d2ef9d556e5fde25c11e1fc45aaad36c41e2c611aa394
+    # use the same keys than for DOT
+    ksm_validator_sk: <- `${dot_validator_sk}`
+    ksm_validator_sr25519_pk: <- `${dot_validator_sr25519_pk}`
+    ksm_validator_ed25519_pk: <- `${dot_validator_ed25519_pk}`
 
 stack:
   defines: process-group
   runnable-list:
+    - /bison/vault_pandora
     - /bison/dot_validator
     - /bison/ksm_validator
-    - /bison/vault

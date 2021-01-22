@@ -3,6 +3,7 @@ validator:
   defines: runnable
   inherits: ./node
   containers:
+    defines: containers
     node:
       hooks:
         container-started: inject-keys

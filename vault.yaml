@@ -1,0 +1,42 @@
+namespace: /bison
+
+vault:
+  defines: runnable
+  inherits: /vault/latest
+  containers:
+    defines: containers
+    vault:
+      hooks:
+        container-started: inject-keys
+
+  variables:
+    defines: variables
+    dot_validator_sk:
+      type: string
+      value: ""
+    dot_validator_ed25519_pk:
+      type: string
+      value: ""
+    dot_validator_sr25519_pk:
+      type: string
+      value: ""
+    ksm_validator_sk:
+      type: string
+      value: ""
+    ksm_validator_ed25519_pk:
+      type: string
+      value: ""
+    ksm_validator_sr25519_pk:
+      type: string
+      value: ""
+    
+  actions:
+    defines: actions
+    inject-keys:
+      code: |
+        act("bison/vault/put", "path", "validators/dot", "key", "validator_sk", "value", `${dot_validator_sk}`)
+        act("bison/vault/put", "path", "validators/dot", "key", "validator_ed25519_pk", "value", `${dot_validator_ed25519_pk}`)
+        act("bison/vault/put", "path", "validators/dot", "key", "validator_sr25519_pk", "value", `${dot_validator_sr25519_pk}`)
+        act("bison/vault/put", "path", "validators/ksm", "key", "validator_sk", "value", `${ksm_validator_sk}`)
+        act("bison/vault/put", "path", "validators/ksm", "key", "validator_ed25519_pk", "value", `${ksm_validator_ed25519_pk}`)
+        act("bison/vault/put", "path", "validators/ksm", "key", "validator_sr25519_pk", "value", `${ksm_validator_sr25519_pk}`)
