@@ -8,6 +8,7 @@ validator:
         container-started: inject-keys
   
   variables:
+    defines: variables
     args:
       value: "--validator"
 
@@ -17,10 +18,13 @@ validator:
     #    to the secret key, you can obtain those via `subkey`.
     validator_sk:
       type: string
+      value: ""
     validator_ed25519_pk:
       type: string
+      value: ""
     validator_sr25519_pk:
       type: string
+      value: ""
   
   files:
     defines: files
