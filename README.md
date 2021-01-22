@@ -5,6 +5,15 @@ A bison trails like stack built on top of Monk for a 1000th of the time and cost
 2. Monk stack is extendable (see below)
 3. Use Monk's cloud provider abstraction for a multi cloud setup
 
+## Usage
+This should be as easy as editing `stack.yaml` to contain the right default keys and then running:
+```
+mncc load polkadot/* vault.yaml stack.yaml
+mncc run bison/stack
+```
+
+Obviously, you can adapt this to run on a Monk cluster as well.
+
 ## Extandable Stack
 A sample bison stack is defined as such in `stack.yml`:
 ```yaml
