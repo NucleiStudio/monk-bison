@@ -17,8 +17,15 @@ ksm_validator:
   variables:
     chain: kusama
 
+vault:
+  defines: runnable
+  inherits: /vault/latest
+  variables:
+    root-token: "actualroottokenthatissounsafeyoushouldnevereveruseitinprod"
+
 stack:
   defines: process-group
   runnable-list:
     - /bison/dot_validator
     - /bison/ksm_validator
+    - /bison/vault
