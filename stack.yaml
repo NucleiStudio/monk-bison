@@ -17,9 +17,9 @@ dot_validator:
     chain: polkadot
     node-name: monk-overlord
     # sample keys, obviously do not use this in prod.
-    validator_sk: <- act("bison/vault/get", "path", "validators/dot", "key", "validator_sk")
-    validator_sr25519_pk: <- act("bison/vault/get", "path", "validators/dot", "key", "validator_sr25519_pk")
-    validator_ed25519_pk: <- act("bison/vault/get", "path", "validators/dot", "key", "validator_ed25519_pk")
+    validator_sk: <- act("bison/vault_pandora/get", "path", "validators/dot", "key", "validator_sk")
+    validator_sr25519_pk: <- act("bison/vault_pandora/get", "path", "validators/dot", "key", "validator_sr25519_pk")
+    validator_ed25519_pk: <- act("bison/vault_pandora/get", "path", "validators/dot", "key", "validator_ed25519_pk")
 
 ksm_validator:
   defines: runnable
@@ -38,9 +38,9 @@ ksm_validator:
     chain: kusama
     node-name: monk-overlord
     # sample keys, obviously do not use this in prod.
-    validator_sk: <- act("bison/vault/get", "path", "validators/ksm", "key", "validator_sk")
-    validator_sr25519_pk: <- act("bison/vault/get", "path", "validators/ksm", "key", "validator_sr25519_pk")
-    validator_ed25519_pk: <- act("bison/vault/get", "path", "validators/ksm", "key", "validator_ed25519_pk")
+    validator_sk: <- act("bison/vault_pandora/get", "path", "validators/ksm", "key", "validator_sk")
+    validator_sr25519_pk: <- act("bison/vault_pandora/get", "path", "validators/ksm", "key", "validator_sr25519_pk")
+    validator_ed25519_pk: <- act("bison/vault_pandora/get", "path", "validators/ksm", "key", "validator_ed25519_pk")
 
 vault_pandora:
   defines: runnable
