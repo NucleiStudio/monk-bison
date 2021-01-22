@@ -1,4 +1,4 @@
-# Monk Bison
+# Monk Bison 🦬
 A bison trails like stack built on top of Monk for a 1000th of the time and cost.
 
 1. Secrets such as validator keys are stored in Hashicorp Vault
