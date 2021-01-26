@@ -14,7 +14,7 @@ vault:
     # super simple health check, if the container has started and
     # our action worked, we should see the keys in vault
     readyness:
-      code: exec("vault", "vault", "kv", "list", "validators/dot") "validator_sk" contains?
+      code: exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault kv list -address=http://127.0.0.1:8200 validators`) "ksm" contains?
       period: 15
       initialDelay: 13
 
@@ -43,9 +43,10 @@ vault:
     defines: actions
     inject-keys:
       code: |
-        act("bison/vault/put", "path", "validators/dot", "key", "validator_sk", "value", `${dot_validator_sk}`)
-        act("bison/vault/put", "path", "validators/dot", "key", "validator_ed25519_pk", "value", `${dot_validator_ed25519_pk}`)
-        act("bison/vault/put", "path", "validators/dot", "key", "validator_sr25519_pk", "value", `${dot_validator_sr25519_pk}`)
-        act("bison/vault/put", "path", "validators/ksm", "key", "validator_sk", "value", `${ksm_validator_sk}`)
-        act("bison/vault/put", "path", "validators/ksm", "key", "validator_ed25519_pk", "value", `${ksm_validator_ed25519_pk}`)
-        act("bison/vault/put", "path", "validators/ksm", "key", "validator_sr25519_pk", "value", `${ksm_validator_sr25519_pk}`)
+        exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault secrets enable -address=http://127.0.0.1:8200 -path=validators/ kv`)
+        exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault kv put -address=http://127.0.0.1:8200 validators/dot validator_sk=${dot_validator_sk}`)
+        exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault kv put -address=http://127.0.0.1:8200 validators/dot validator_ed25519_pk=${dot_validator_ed25519_pk}`)
+        exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault kv put -address=http://127.0.0.1:8200 validators/dot validator_sr25519_pk=${dot_validator_sr25519_pk}`)
+        exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault kv put -address=http://127.0.0.1:8200 validators/ksm validator_sk=${ksm_validator_sk}`)
+        exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault kv put -address=http://127.0.0.1:8200 validators/ksm validator_ed25519_pk=${ksm_validator_ed25519_pk}`)
+        exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault kv put -address=http://127.0.0.1:8200 validators/ksm validator_sr25519_pk=${ksm_validator_sr25519_pk}`)
