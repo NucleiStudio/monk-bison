@@ -20,6 +20,10 @@ vault:
 
   variables:
     defines: variables
+    vault_cli_no_color:
+      type: bool
+      value: true
+      env: VAULT_CLI_NO_COLOR
     dot_validator_sk:
       type: string
       value: ""
