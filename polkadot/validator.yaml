@@ -48,15 +48,13 @@ validator:
             }'
         }
 
-        sleep 60
-
-        insert_key "babe" {{ v "validator_sk" }} {{ v "validator_sr25519_pk" }}
-        insert_key "imon" {{ v "validator_sk" }} {{ v "validator_sr25519_pk" }}
-        insert_key "auth" {{ v "validator_sk" }} {{ v "validator_sr25519_pk" }}
-        insert_key "para" {{ v "validator_sk" }} {{ v "validator_sr25519_pk" }}
-        insert_key "gran" {{ v "validator_sk" }} {{ v "validator_ed25519_pk" }}
-  
+        insert_key $1 $2 $3
   actions:
     defines: actions
     inject-keys:
-      code: exec("node", "bin/sh", "-c", "/keys.sh")
+      code: |
+        exec("node", "/bin/sh", "-c", `/keys.sh babe ${validator_sk} ${validator_sr25519_pk}`)
+        exec("node", "/bin/sh", "-c", `/keys.sh imon ${validator_sk} ${validator_sr25519_pk}`)
+        exec("node", "/bin/sh", "-c", `/keys.sh auth ${validator_sk} ${validator_sr25519_pk}`)
+        exec("node", "/bin/sh", "-c", `/keys.sh para ${validator_sk} ${validator_sr25519_pk}`)
+        exec("node", "/bin/sh", "-c", `/keys.sh gran ${validator_sk} ${validator_ed25519_pk}`)
