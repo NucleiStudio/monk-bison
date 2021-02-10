@@ -23,7 +23,6 @@ dot_validator:
 ksm_validator:
   defines: runnable
   inherits: /polkadot/validator
-
   # depend on vault for secret fetching
   depends:
     defines: depends
@@ -31,7 +30,6 @@ ksm_validator:
       runnables:
         - /bison/vault_pandora
       timeout: 60
-
   variables:
     defines: variables
     chain: kusama
@@ -39,6 +37,18 @@ ksm_validator:
     validator_sk: <- act("bison/vault_pandora/get", "path", "validators/ksm/validator_sk", "key", "key")
     validator_sr25519_pk: <- act("bison/vault_pandora/get", "path", "validators/ksm/validator_sr25519_pk", "key", "key")
     validator_ed25519_pk: <- act("bison/vault_pandora/get", "path", "validators/ksm/validator_ed25519_pk", "key", "key")
+
+dot_validator_local:
+  defines: runnable
+  inherits: ./dot_validator
+
+ksm_validator_local:
+  defines: runnable
+  inherits: ./ksm_validator
+  variables:
+    wsrpc-port: 9945
+    p2p-port: 30334
+    prometheus-port: 9616
 
 vault_pandora:
   defines: runnable
@@ -49,7 +59,7 @@ vault_pandora:
     dot_validator_sk: 0x3a37407ee54935b75b723a303e301c2ca23c24625b37b1089fc5b27bc50431c3
     dot_validator_sr25519_pk: 0x3acfd15c0ef5516a4eeeff48537e08a329c09a603dfa480086707ba9e4c7e628
     dot_validator_ed25519_pk: 0x258295389473ef1b9f8d2ef9d556e5fde25c11e1fc45aaad36c41e2c611aa394
-    # use the same keys than for DOT
+    # use the same keys for DOT
     ksm_validator_sk: <- `${dot_validator_sk}`
     ksm_validator_sr25519_pk: <- `${dot_validator_sr25519_pk}`
     ksm_validator_ed25519_pk: <- `${dot_validator_ed25519_pk}`
@@ -60,3 +70,10 @@ stack:
     - /bison/vault_pandora
     - /bison/dot_validator
     - /bison/ksm_validator
+
+stack-local:
+  defines: process-group
+  runnable-list:
+    - /bison/vault_pandora
+    - /bison/dot_validator_local
+    - /bison/ksm_validator_local
