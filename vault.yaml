@@ -10,14 +10,10 @@ vault:
         container-started: inject-keys
   checks:
     defines: checks
-
-    # super simple health check, if the container has started and
-    # our action worked, we should see the keys in vault
     readyness:
       code: exec("vault", "/bin/sh", "-c", `VAULT_TOKEN=${root-token} vault kv list -address=http://127.0.0.1:8200 validators`) "ksm" contains?
       period: 15
       initialDelay: 13
-
   variables:
     defines: variables
     vault_cli_no_color:
