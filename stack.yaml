@@ -10,7 +10,7 @@ dot_validator:
     wait-for:
       runnables:
         - /bison/vault_pandora
-      timeout: 60
+      timeout: 120
 
   variables:
     defines: variables
@@ -29,7 +29,7 @@ ksm_validator:
     wait-for:
       runnables:
         - /bison/vault_pandora
-      timeout: 60
+      timeout: 120
   variables:
     defines: variables
     chain: kusama
